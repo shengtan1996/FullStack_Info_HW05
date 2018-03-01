@@ -1,12 +1,13 @@
-
-
+{% extends "base.html" %}
 <!-- 1. extend from base-->
 
 {% block title %}
 	Survey
 {% endblock %}
 
+
 {% block header %}
+	{{super()}}
 	<!-- super function here -->
 	<form action="logout" id="logout">
 		<span id="username">Logged in as {{ name }}</span>
@@ -14,7 +15,7 @@
 	</form>
 {% endblock %}
 
-
+{% block content%}
 <!-- 1. extend from content block from the base-->
 	<div class="main-container">
 		<h3>Your Favorites</h3>
@@ -33,3 +34,4 @@
 
 		<button class="action-button" id="submit-survey">Submit</button>
 </div>
+{%endblock%}

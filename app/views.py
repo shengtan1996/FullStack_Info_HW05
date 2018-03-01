@@ -7,19 +7,22 @@ app.secret_key = os.environ.get('SECRET_KEY') or 'hard to guess string'
 @app.route('/')
 @app.route('/index')
 def index():
-    username = ''
-    if (): #check if the user is already in session, if so, direct the user to survey.html Hint: render_template with a variable
-        pass
+    if ('username' in session): #check if the user is already in session, if so, direct the user to survey.html Hint: render_template with a variable
+        username = session['username']
+        return render_template('survey.html', name = username)
     else:
         return render_template('login.html')
 
-@app.route('/login') # You need to specify something here for the function to get requests
+@app.route('/login', methods = ['POST','GET']) # You need to specify something here for the function to get requests
 def login():
     # Here, you need to have logic like if there's a post request method, store the username and email from the form into
     # session dictionary
-    if():
-        pass
-    return None
+    if(request.method == 'POST'):
+        session['username'] = request.form['un']
+        session['email'] = request.form['em']
+        return redirect(url_for('index'))
+    else:
+        return None
 
 @app.route('/logout')
 def logout():
@@ -31,13 +34,18 @@ def logout():
 def submitSurvey():
     username = ''
     email = ''
-    if(): #check if user in session
+    print(0)
+    if('username' in session): #check if user in session
         username = session.get('username')
+        emai = session.get('email')
         surveyResponse = {}
         #get the rest o responses from users using request library Hint: ~3 lines of code
+        surveyResponse['color'] = request.form.get('color')
+        surveyResponse['food'] = request.form.get('food')
+        surveyResponse['vacation'] = request.form.get('vacation')
         surveyResponse['fe-before'] = request.form.get('feBefore')
         surveyResponse['fe-after'] = request.form.get('feAfter')
-        return render_template('results.html') # pass in variables to the template
+        return render_template('results.html', name = username, surveyResponse = surveyResponse) # pass in variables to the template
     else:
         return render_template('login.html')
 
